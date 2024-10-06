@@ -9,9 +9,11 @@ use Illuminate\Support\Facades\Storage;
 
 class StudentController extends Controller
 {
-    const VIEW_PATH = 'student.';
+    const VIEW_PATH = 'admin.student.';
+
     public function index(Request $request)
-    {
+    {   
+        $title = 'Danh sách sinh viên';
         $search = $request->input('search');
         $sortBy = $request->input('sort_by', 'id');  // Mặc định là sắp xếp theo 'id'
         $sortOrder = $request->input('sort_order', 'asc');  // Mặc định là 'asc' (tăng dần)
@@ -29,21 +31,16 @@ class StudentController extends Controller
             ->orderBy($sortBy, $sortOrder)  // Sắp xếp kết quả đã tìm kiếm theo cột và thứ tự
             ->paginate(5);
 
-        return view(self::VIEW_PATH . __FUNCTION__, compact('data', 'search', 'sortBy', 'sortOrder'));
+        return view(self::VIEW_PATH . __FUNCTION__, compact('data', 'search', 'sortBy', 'sortOrder','title'));
     }
-
-
-
-
-
-
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        return view(view: self::VIEW_PATH . __FUNCTION__);
+        $title = 'Thêm sinh viên mới';
+        return view(self::VIEW_PATH . __FUNCTION__, compact('title'));
     }
 
     /**
@@ -51,20 +48,18 @@ class StudentController extends Controller
      */
     public function store(StudentRequest $request)
     {
-        if ($request->isMethod('POST')) {
-            $data = $request->except('_token');
+        $data = $request->except('_token');
 
-            if ($request->hasFile('image')) {
-                $fileName = $request->file('image')->store('upload/student', 'public');
-            } else {
-                $fileName = null;
-            }
-            $data['image'] = $fileName;
-
-            Student::create($data);;
-
-            return redirect()->route('student.index');
+        if ($request->hasFile('image')) {
+            $fileName = $request->file('image')->store('upload/student', 'public');
+        } else {
+            $fileName = null;
         }
+        $data['image'] = $fileName;
+
+        Student::create($data);
+
+        return redirect()->route('student.index')->with('success', 'Sinh viên đã được thêm thành công.');
     }
 
     /**
@@ -72,9 +67,9 @@ class StudentController extends Controller
      */
     public function show(string $id)
     {
-        $data = Student::query()->findOrFail($id);
-
-        return view(self::VIEW_PATH . __FUNCTION__, compact('data'));
+        $model = Student::query()->findOrFail($id);
+        $title = 'Thông tin sinh viên';
+        return view(self::VIEW_PATH . __FUNCTION__, compact('model', 'title'));
     }
 
     /**
@@ -83,7 +78,8 @@ class StudentController extends Controller
     public function edit(string $id)
     {
         $model = Student::query()->findOrFail($id);
-        return view(self::VIEW_PATH . __FUNCTION__, compact('model'));
+        $title = 'Chỉnh sửa thông tin sinh viên';
+        return view(self::VIEW_PATH . __FUNCTION__, compact('model', 'title'));
     }
 
     /**
@@ -92,26 +88,22 @@ class StudentController extends Controller
     public function update(StudentRequest $request, string $id)
     {
         $model = Student::findOrFail($id);
+        $data = $request->except('_token');
 
-        if ($request->isMethod('put')) {
-            $data = $request->except('_token');
-
-            if ($request->hasFile('image')) {
-                $data['image'] = $request->file('image')->store('upload/student', 'public');
-            } else {
-                $data['image'] = $model->image;
-            }
-
-            $image = $model->image;
-
-            $model->update($data);
-
-            if ($image && $image != $data['image'] && Storage::disk('public')->exists($image)) {
-                Storage::disk('public')->delete('upload/student/', $image);
-            }
-
-            return redirect()->route('student.index');
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('upload/student', 'public');
+        } else {
+            $data['image'] = $model->image;
         }
+
+        $oldImage = $model->image;
+        $model->update($data);
+
+        if ($oldImage && $oldImage != $data['image'] && Storage::disk('public')->exists($oldImage)) {
+            Storage::disk('public')->delete($oldImage);
+        }
+
+        return redirect()->route('student.index')->with('success', 'Thông tin sinh viên đã được cập nhật.');
     }
 
     /**
@@ -120,14 +112,14 @@ class StudentController extends Controller
     public function destroy(string $id)
     {
         $model = Student::query()->findOrFail($id);
-
-        $cureeImage = $model->image;
+        $currentImage = $model->image;
 
         $model->delete();
 
-        if ($cureeImage && Storage::disk('public')->exists($cureeImage)) {
-            Storage::disk('public')->delete($cureeImage);
+        if ($currentImage && Storage::disk('public')->exists($currentImage)) {
+            Storage::disk('public')->delete($currentImage);
         }
-        return redirect()->route('student.index');
+
+        return redirect()->route('student.index')->with('success', 'Sinh viên đã được xóa.');
     }
 }

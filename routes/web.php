@@ -28,5 +28,5 @@ Route::prefix('student')
         Route::post('/store',[StudentController::class,'store'])->name('store');
         Route::get('/{id}/edit',[StudentController::class , 'edit'])->name('edit');
         Route::put('/{id}/update',[StudentController::class , 'update'])->name('update');
-        Route::get('/{id}/destroy',[StudentController::class , 'destroy'])->name('destroy');
+        Route::delete('/{id}/destroy',[StudentController::class , 'destroy'])->name('destroy');
     });
