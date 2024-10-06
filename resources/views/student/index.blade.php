@@ -81,6 +81,7 @@
                                 <td>{{ $item->address }}</td>
                                 <td>{{ $item->tel }}</td>
                                 <td>
+                                    <a href="{{ route('student.show', $item->id) }}" class="btn btn-info">Show</a>
                                     <a href="{{ route('student.edit', $item->id) }}" class="btn btn-warning">Edit</a>
                                     <a href="{{ route('student.destroy', $item->id) }}"
                                         onclick="return confirm('Are you sure?')" class="btn btn-danger">Delete</a>

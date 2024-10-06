@@ -3,28 +3,35 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StudentRequest extends FormRequest
 {
+    /**
+     * Xác định người dùng có được phép thực hiện request này không.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
     /**
      * Xác định các quy tắc xác thực.
      */
     public function rules(): array
     {
-        $studentId = $this->route('student'); // Lấy ID của sinh viên từ route
-
         return [
             'name' => 'required',
             'gender' => 'required',
-            'tel' => 'required|unique:students,tel,' . $studentId . ',id', // Ngoại trừ số điện thoại của sinh viên hiện tại
+            'tel' => [
+                'required',
+                Rule::unique('students')->ignore($this->route('id')),  // Sử dụng 'id' thay vì 'student'
+            ],
             'address' => 'required',
         ];
     }
 
-    /**
-     * Tùy chỉnh thông báo lỗi.
-     */
-    public function messages()
+    public function messages(): array
     {
         return [
             'name.required' => 'Tên là bắt buộc.',

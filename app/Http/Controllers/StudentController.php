@@ -15,7 +15,7 @@ class StudentController extends Controller
         $search = $request->input('search');
         $sortBy = $request->input('sort_by', 'id');  // Mặc định là sắp xếp theo 'id'
         $sortOrder = $request->input('sort_order', 'asc');  // Mặc định là 'asc' (tăng dần)
-    
+
         // Truy vấn dữ liệu với tìm kiếm và sắp xếp sau khi tìm kiếm
         $data = Student::query()
             ->when($search, function ($query, $search) {
@@ -28,10 +28,10 @@ class StudentController extends Controller
             })
             ->orderBy($sortBy, $sortOrder)  // Sắp xếp kết quả đã tìm kiếm theo cột và thứ tự
             ->paginate(5);
-    
+
         return view(self::VIEW_PATH . __FUNCTION__, compact('data', 'search', 'sortBy', 'sortOrder'));
     }
-    
+
 
 
 
@@ -91,25 +91,25 @@ class StudentController extends Controller
      */
     public function update(StudentRequest $request, string $id)
     {
-
-        $model = Student::query()->findOrFail($id);
+        $model = Student::findOrFail($id);
 
         if ($request->isMethod('put')) {
             $data = $request->except('_token');
 
             if ($request->hasFile('image')) {
-                $fileName = $request->file('image')->store('upload/student',  'public');
+                $data['image'] = $request->file('image')->store('upload/student', 'public');
             } else {
-                $fileName = $model->image;
+                $data['image'] = $model->image;
             }
-            $data['image'] = $fileName;
-            $cureeImage = $model->image;
+
+            $image = $model->image;
 
             $model->update($data);
 
-            if ($cureeImage && $cureeImage != '' && Storage::disk('public')->exists($cureeImage)) {
-                Storage::disk('public')->delete($cureeImage);
+            if ($image && $image != $data['image'] && Storage::disk('public')->exists($image)) {
+                Storage::disk('public')->delete('upload/student/', $image);
             }
+
             return redirect()->route('student.index');
         }
     }
