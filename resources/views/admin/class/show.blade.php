@@ -67,66 +67,10 @@
                                                         value="option">
                                                 </div>
                                             </td>
-                                            <td>Tên sinh viên</td>
+                                            <td>Tên lớp</td>
                                             <td>{{ $model->name }}</td>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="checkAll"
-                                                        value="option">
-                                                </div>
-                                            </td>
-                                            <td>Lớp</td>
-                                            <td>{{ $model->class->name ?? 'Không có lớp' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="checkAll"
-                                                        value="option">
-                                                </div>
-                                            </td>
-                                            <td>Số điện thoại</td>
-                                            <td>{{ $model->tel }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="checkAll"
-                                                        value="option">
-                                                </div>
-                                            </td>
-                                            <td>Giới tính</td>
-                                            <td>{{ $model->gender }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="checkAll"
-                                                        value="option">
-                                                </div>
-                                            </td>
-                                            <td>Địa chỉ</td>
-                                            <td>{{ $model->address }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="checkAll"
-                                                        value="option">
-                                                </div>
-                                            </td>
-                                            <td>Ảnh đại diện</td>
-                                            <td>
-                                                @if ($model->image)
-                                                    <img src="{{ Storage::url($model->image) }}" width="100px"
-                                                        alt="Student Image">
-                                                @else
-                                                    Chưa có ảnh
-                                                @endif
-                                            </td>
-                                        </tr>
+                                       
                                     </tbody>
                                 </table>
 
@@ -153,7 +97,7 @@
                     </div><!-- end card-body -->
                 </div><!-- end card -->
             </div><!-- end col -->
-            <a href="{{ route('student.index') }}" class="btn btn-danger">Quay về danh sách</a>
+            <a href="{{ route('class.index') }}" class="btn btn-danger">Quay về danh sách</a>
         </div><!-- end col -->
     </div>
 

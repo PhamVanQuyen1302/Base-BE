@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StudentRequest;
+use App\Models\ClassModel;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -10,29 +11,31 @@ use Illuminate\Support\Facades\Storage;
 class StudentController extends Controller
 {
     const VIEW_PATH = 'admin.student.';
-
     public function index(Request $request)
-    {   
+    {
         $title = 'Danh sách sinh viên';
         $search = $request->input('search');
-        $sortBy = $request->input('sort_by', 'id');  // Mặc định là sắp xếp theo 'id'
-        $sortOrder = $request->input('sort_order', 'asc');  // Mặc định là 'asc' (tăng dần)
-
-        // Truy vấn dữ liệu với tìm kiếm và sắp xếp sau khi tìm kiếm
-        $data = Student::query()
+        $sortBy = $request->input('sort_by', 'id');
+        $sortOrder = $request->input('sort_order', 'asc');
+    
+        // Truy vấn dữ liệu với relationship 'class'
+        $data = Student::with('class:id,name')  // Lấy thông tin lớp học kèm theo
             ->when($search, function ($query, $search) {
                 return $query->where(function ($query) use ($search) {
                     $query->where('name', 'like', "%{$search}%")
                         ->orWhere('tel', 'like', "%{$search}%")
                         ->orWhere('gender', 'like', "%{$search}%")
-                        ->orWhere('address', 'like', "%{$search}%");
+                        ->orWhere('address', 'like', "%{$search}%")
+                        ->orWhereHas('class', function ($query) use ($search) {
+                            $query->where('name', 'like', "%{$search}%");  // Tìm kiếm theo tên lớp
+                        });
                 });
             })
-            ->orderBy($sortBy, $sortOrder)  // Sắp xếp kết quả đã tìm kiếm theo cột và thứ tự
+            ->orderBy($sortBy, $sortOrder)  // Sắp xếp kết quả theo cột và thứ tự chỉ định
             ->paginate(5);
-
-        return view(self::VIEW_PATH . __FUNCTION__, compact('data', 'search', 'sortBy', 'sortOrder','title'));
+        return view(self::VIEW_PATH . __FUNCTION__, compact('data', 'search', 'sortBy', 'sortOrder', 'title'));
     }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -40,7 +43,8 @@ class StudentController extends Controller
     public function create()
     {
         $title = 'Thêm sinh viên mới';
-        return view(self::VIEW_PATH . __FUNCTION__, compact('title'));
+        $dataClass = ClassModel::get();
+        return view(self::VIEW_PATH . __FUNCTION__, compact('title', "dataClass"));
     }
 
     /**
@@ -67,7 +71,7 @@ class StudentController extends Controller
      */
     public function show(string $id)
     {
-        $model = Student::query()->findOrFail($id);
+        $model = Student::with('class:id,name')->findOrFail($id);
         $title = 'Thông tin sinh viên';
         return view(self::VIEW_PATH . __FUNCTION__, compact('model', 'title'));
     }
@@ -79,7 +83,8 @@ class StudentController extends Controller
     {
         $model = Student::query()->findOrFail($id);
         $title = 'Chỉnh sửa thông tin sinh viên';
-        return view(self::VIEW_PATH . __FUNCTION__, compact('model', 'title'));
+        $dataClass = ClassModel::get();
+        return view(self::VIEW_PATH . __FUNCTION__, compact('model', 'title', "dataClass"));
     }
 
     /**

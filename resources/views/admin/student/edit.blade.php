@@ -55,11 +55,24 @@
                         <label for="studentGender" class="form-label">Giới tính</label>
                         <select class="form-select" name="gender" id="studentGender">
                             <option selected disabled>Chọn giới tính</option>
-                            <option value="Nam" {{ $model->gender == 'Nam' ? 'selected' : '' }}>Nam</option>
-                            <option value="Nữ" {{ $model->gender == 'Nữ' ? 'selected' : '' }}>Nữ</option>
+                            <option value="Nam" {{ $model->gender === 'nam' ? 'selected' : '' }}>Nam</option>
+                            <option value="Nữ" {{ $model->gender === 'nữ' ? 'selected' : '' }}>Nữ</option>
                         </select>
                     </div>
                     @error('gender')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+
+                    <div class="mb-3">
+                        <label for="class" class="form-label">Lớp học</label>
+                        <select class="form-select" name="class_id" id="class">
+                            <option selected disabled>Chọn lớp học</option>
+                            @foreach ($dataClass as $class)
+                                <option {{ $class->id === $model->class_id ? "selected" : ""}} value="{{ $class->id }}">{{ $class->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @error('class_id')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
 

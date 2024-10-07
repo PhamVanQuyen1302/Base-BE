@@ -29,82 +29,33 @@
         <div class="col-10">
             <h2 class="text-center">{{ $title }}</h2>
             <div class="row">
-                <form action="{{ route('student.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('class.store') }}" method="POST">
                     @csrf
-
+                
+                    <!-- Thông báo lỗi nếu tên lớp trùng -->
+                    @if (session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+                
                     <div class="mb-3">
-                        <label for="studentName" class="form-label">Tên sinh viên</label>
-                        <input type="text" class="form-control" id="studentName" name="name"
-                            placeholder="Nhập tên sinh viên">
+                        <label for="studentName" class="form-label">Lớp học</label>
+                        <input type="text" class="form-control" id="studentName" name="name" placeholder="Nhập lớp học"
+                               value="{{ old('name') }}"> <!-- Giữ lại giá trị nhập vào nếu có lỗi -->
                     </div>
+                    
                     @error('name')
                         <span class="text-danger">
                             {{ $message }}
                         </span>
                     @enderror
-
-                    <div class="mb-3">
-                        <label for="studentTel" class="form-label">Số điện thoại</label>
-                        <input type="text" class="form-control" id="studentTel" name="tel"
-                            placeholder="Nhập số điện thoại">
-                    </div>
-                    @error('tel')
-                        <span class="text-danger">
-                            {{ $message }}
-                        </span>
-                    @enderror
-
-                    <div class="mb-3">
-                        <label for="studentGender" class="form-label">Giới tính</label>
-                        <select class="form-select" name="gender" id="studentGender">
-                            <option selected disabled>Chọn giới tính</option>
-                            <option value="Nam">Nam</option>
-                            <option value="Nữ">Nữ</option>
-                        </select>
-                    </div>
-                    @error('gender')
-                        <span class="text-danger">
-                            {{ $message }}
-                        </span>
-                    @enderror
-
-                    <div class="mb-3">
-                        <label for="class" class="form-label">Lớp học</label>
-                        <select class="form-select" name="class_id" id="class">
-                            <option selected disabled>Chọn lớp học</option>
-                            @foreach ($dataClass as $class)
-                                <option value="{{ $class->id }}">{{ $class->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    @error('class_id')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-
-                    <div class="mb-3">
-                        <label for="studentAddress" class="form-label">Địa chỉ</label>
-                        <textarea class="form-control" id="studentAddress" name="address" rows="4" placeholder="Nhập địa chỉ"></textarea>
-                    </div>
-                    @error('address')
-                        <span class="text-danger">
-                            {{ $message }}
-                        </span>
-                    @enderror
-
-                    <div class="mb-3">
-                        <label for="studentImage" class="form-label">Ảnh đại diện</label>
-                        <input type="file" class="form-control" id="studentImage" name="image">
-                    </div>
-                    @error('image')
-                        <span class="text-danger">
-                            {{ $message }}
-                        </span>
-                    @enderror
-
+                
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Thêm sinh viên</button>
+                        <button type="submit" class="btn btn-primary">Thêm lớp</button>
                     </div>
                 </form>
+                
             </div>
         </div>
     </div>

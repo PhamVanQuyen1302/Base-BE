@@ -29,7 +29,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title mb-0">Danh sách sinh viên</h4>
+                    <h4 class="card-title mb-0">Danh sách lớp học</h4>
                 </div>
 
                 <div class="card-body">
@@ -37,8 +37,8 @@
                         <div class="row g-4 mb-3">
                             <div class="col-sm-auto">
                                 <div>
-                                    <a href="{{ route('student.create') }}" class="btn btn-success">
-                                        <i class="ri-add-line align-bottom me-1"></i> Thêm sinh viên
+                                    <a href="{{ route('class.create') }}" class="btn btn-success">
+                                        <i class="ri-add-line align-bottom me-1"></i> Thêm lớp học
                                     </a>
                                     <button class="btn btn-soft-danger" onClick="deleteMultiple()">
                                         <i class="ri-delete-bin-2-line"></i>
@@ -47,10 +47,10 @@
                             </div>
                             <div class="col-sm">
                                 <div class="d-flex justify-content-sm-end">
-                                    <form method="GET" action="{{ route('student.index') }}">
+                                    <form method="GET" action="{{ route('class.index') }}">
                                         <div class="input-group search-box ms-2">
                                             <input type="text" name="search" value="{{ $search }}"
-                                                class="form-control" placeholder="Tìm kiếm sinh viên...">
+                                                class="form-control" placeholder="Tìm kiếm lớp học...">
                                             <button class="btn btn-primary" type="submit">
                                                 <i class="ri-search-line search-icon"></i>
                                             </button>
@@ -72,7 +72,7 @@
                                         </th>
                                         <th class="sort" data-sort="id">
                                             <a
-                                                href="{{ route('student.index', ['search' => $search, 'sort_by' => 'id', 'sort_order' => $sortBy == 'id' && $sortOrder == 'asc' ? 'desc' : 'asc']) }}">
+                                                href="{{ route('class.index', ['search' => $search, 'sort_by' => 'id', 'sort_order' => $sortBy == 'id' && $sortOrder == 'asc' ? 'desc' : 'asc']) }}">
                                                 ID
                                                 @if ($sortBy == 'id')
                                                     @if ($sortOrder == 'asc')
@@ -85,62 +85,9 @@
                                         </th>
                                         <th class="sort" data-sort="name">
                                             <a
-                                                href="{{ route('student.index', ['search' => $search, 'sort_by' => 'name', 'sort_order' => $sortBy == 'name' && $sortOrder == 'asc' ? 'desc' : 'asc']) }}">
+                                                href="{{ route('class.index', ['search' => $search, 'sort_by' => 'name', 'sort_order' => $sortBy == 'name' && $sortOrder == 'asc' ? 'desc' : 'asc']) }}">
                                                 Tên
                                                 @if ($sortBy == 'name')
-                                                    @if ($sortOrder == 'asc')
-                                                        ↑
-                                                    @else
-                                                        ↓
-                                                    @endif
-                                                @endif
-                                            </a>
-                                        </th>
-                                        <th class="sort" data-sort="name">
-                                            <a
-                                                href="{{ route('student.index', ['search' => $search, 'sort_by' => 'name', 'sort_order' => $sortBy == 'name' && $sortOrder == 'asc' ? 'desc' : 'asc']) }}">
-                                                Lớp
-                                                @if ($sortBy == 'name')
-                                                    @if ($sortOrder == 'asc')
-                                                        ↑
-                                                    @else
-                                                        ↓
-                                                    @endif
-                                                @endif
-                                            </a>
-                                        </th>
-                                        <th class="sort" data-sort="tel">
-                                            <a
-                                                href="{{ route('student.index', ['search' => $search, 'sort_by' => 'tel', 'sort_order' => $sortBy == 'tel' && $sortOrder == 'asc' ? 'desc' : 'asc']) }}">
-                                                Số điện thoại
-                                                @if ($sortBy == 'tel')
-                                                    @if ($sortOrder == 'asc')
-                                                        ↑
-                                                    @else
-                                                        ↓
-                                                    @endif
-                                                @endif
-                                            </a>
-                                        </th>
-                                        <th class="sort" data-sort="gender">
-                                            <a
-                                                href="{{ route('student.index', ['search' => $search, 'sort_by' => 'gender', 'sort_order' => $sortBy == 'gender' && $sortOrder == 'asc' ? 'desc' : 'asc']) }}">
-                                                Giới tính
-                                                @if ($sortBy == 'gender')
-                                                    @if ($sortOrder == 'asc')
-                                                        ↑
-                                                    @else
-                                                        ↓
-                                                    @endif
-                                                @endif
-                                            </a>
-                                        </th>
-                                        <th class="sort" data-sort="image">Hình ảnh</th>
-                                        <th class="sort" data-sort="address">
-                                            <a
-                                                href="{{ route('student.index', ['search' => $search, 'sort_by' => 'address', 'sort_order' => $sortBy == 'address' && $sortOrder == 'asc' ? 'desc' : 'asc']) }}">
-                                                Địa chỉ
-                                                @if ($sortBy == 'address')
                                                     @if ($sortOrder == 'asc')
                                                         ↑
                                                     @else
@@ -169,26 +116,17 @@
                                             </td>
                                             <td>{{ $student->id }}</td>
                                             <td class="text-wrap" style="max-width: 200px;">{{ $student->name }}</td>
-                                            <td class="text-wrap" style="max-width: 200px;">{{ $student->class->name ?? 'Không có lớp' }}</td>
-
-                                            <td>{{ $student->tel }}</td>
-                                            <td>{{ $student->gender }}</td>
                                             <td>
-                                                <img src="{{ Storage::url($student->image) }}" width="50px"
-                                                    alt="Student Image">
-                                            </td>
-                                            <td>{{ $student->address }}</td>
-                                            <td>
-                                                <a href="{{ route('student.show', $student->id) }}"
+                                                <a href="{{ route('class.show', $student->id) }}"
                                                     class="btn btn-info">Xem</a>
-                                                <a href="{{ route('student.edit', $student->id) }}"
+                                                <a href="{{ route('class.edit', $student->id) }}"
                                                     class="btn btn-warning">Sửa</a>
-                                                <form action="{{ route('student.destroy', $student->id) }}" method="POST"
-                                                    style="display:inline-block;">
+                                                <form action="{{ route('class.destroy', $student->id) }}" method="POST"
+                                                    style="display:inline-block;" id="delete-form-{{ $student->id }}">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger"
-                                                        onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</button>
+                                                    <button type="button" class="btn btn-danger"
+                                                        onclick="handleConfirm({{ $student->id }})">Xóa</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -202,7 +140,7 @@
                                             colors="primary:#121331,secondary:#08a88a"
                                             style="width:75px;height:75px"></lord-icon>
                                         <h5 class="mt-2">Xin lỗi! Không có kết quả</h5>
-                                        <p class="text-muted mb-0">Không tìm thấy sinh viên nào phù hợp với tìm kiếm của
+                                        <p class="text-muted mb-0">Không tìm thấy lớp học nào phù hợp với tìm kiếm của
                                             bạn.</p>
                                     </div>
                                 </div>
@@ -220,6 +158,26 @@
 
 @endsection
 @section('js')
+<script>
+    const handleConfirm = (studentId) => {
+        swal({
+            title: "Bạn có muốn xóa lớp này không?",
+            buttons: {
+                cancel: "Hủy!",
+                confirm: {
+                    text: "Xóa",
+                    value: true,
+                    closeModal: true
+                }
+            }
+        }).then((willDelete) => {
+            if (willDelete) {
+                // Nếu xác nhận, gửi form xóa
+                document.getElementById(`delete-form-${studentId}`).submit();
+            }
+        });
+    }
+</script>
     <script src="{{ asset('assets/admin/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/admin/assets/libs/simplebar/simplebar.min.js') }}"></script>
     <script src="{{ asset('assets/admin/assets/libs/node-waves/waves.min.js') }}"></script>

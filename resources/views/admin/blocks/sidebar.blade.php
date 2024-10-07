@@ -68,6 +68,10 @@
                         Danh sách Danh Mục </a>
                 </li> --}}
                 <li class="nav-item">
+                    <a href="{{ route('class.index') }}" class="nav-link" data-key="t-analytics">
+                        Danh sách lớp học </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ route('student.index') }}" class="nav-link" data-key="t-analytics">
                         Danh sách Sinh viên </a>
                 </li>

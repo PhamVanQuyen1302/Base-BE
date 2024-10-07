@@ -23,6 +23,7 @@ class StudentRequest extends FormRequest
         return [
             'name' => 'required',
             'gender' => 'required',
+            'class_id' => 'required',
             'tel' => [
                 'required',
                 Rule::unique('students')->ignore($this->route('id')),  // Sử dụng 'id' thay vì 'student'
@@ -36,6 +37,7 @@ class StudentRequest extends FormRequest
         return [
             'name.required' => 'Tên là bắt buộc.',
             'gender.required' => 'Giới tính là bắt buộc.',
+            'class_id.required' => 'lớp là bắt buộc.',
             'tel.required' => 'Số điện thoại là bắt buộc.',
             'tel.unique' => 'Số điện thoại này đã được sử dụng.',
             'address.required' => 'Địa chỉ là bắt buộc.',
