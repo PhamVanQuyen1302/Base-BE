@@ -17,6 +17,9 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    const ROLE_ADMIN = "admin";
+    const ROLE_USER = "user";
     protected $fillable = [
         'name',
         'email',
@@ -42,4 +45,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function isAdmin() {
+        return $this->role = self::ROLE_ADMIN;
+    }
+
+     public function isUser() {
+        return $this->role = self::ROLE_USER;
+    }
 }

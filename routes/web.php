@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\ClassController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\StudentController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,6 +24,7 @@ Route::get('/', function () {
 
 Route::prefix('student')
     ->as('student.')
+    ->middleware('role:admin') // Admin có tất cả các quyền
     ->group(function () {
         Route::get('/', [StudentController::class, 'index'])->name('index');
         Route::get('/create', [StudentController::class, 'create'])->name('create');
@@ -31,7 +34,10 @@ Route::prefix('student')
         Route::put('/{id}/update', [StudentController::class, 'update'])->name('update');
         Route::delete('/{id}/destroy', [StudentController::class, 'destroy'])->name('destroy');
     });
-Route::prefix('class')->as('class.')->group(function () {
+Route::prefix('class')
+    ->as('class.')
+    ->middleware('role:admin') // Admin có tất cả các quyền
+    ->group(function () {
         Route::get('/', [ClassController::class, 'index'])->name('index');
         Route::get('/create', [ClassController::class, 'create'])->name('create');
         Route::get('/{id}/show', [ClassController::class, 'show'])->name('show');
@@ -40,3 +46,7 @@ Route::prefix('class')->as('class.')->group(function () {
         Route::put('/{id}/update', [ClassController::class, 'update'])->name('update');
         Route::delete('/{id}/destroy', [ClassController::class, 'destroy'])->name('destroy');
     });
+
+Auth::routes();
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');

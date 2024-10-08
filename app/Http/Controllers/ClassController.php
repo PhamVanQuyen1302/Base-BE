@@ -105,12 +105,18 @@ class ClassController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        $model = ClassModel::query()->findOrFail($id);
+        $class = ClassModel::find($id); // Tìm lớp theo ID
 
-        $model->delete();
+        // Kiểm tra xem lớp có sinh viên nào không
+        if ($class->students()->count() > 0) {
+            return redirect()->back()->with('error', 'Không thể xóa lớp ' . $class->name . ' vì vẫn còn sinh viên thuộc lớp này.');
+        }
 
-        return redirect()->route('class.index')->with('success', 'lớp đã được xóa.');
+        // Nếu không có sinh viên nào, tiến hành xóa
+        $class->delete();
+
+        return redirect()->route('class.index')->with('success', 'Xóa lớp ' . $class->name . ' thành công.');
     }
 }

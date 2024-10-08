@@ -169,7 +169,8 @@
                                             </td>
                                             <td>{{ $student->id }}</td>
                                             <td class="text-wrap" style="max-width: 200px;">{{ $student->name }}</td>
-                                            <td class="text-wrap" style="max-width: 200px;">{{ $student->class->name ?? 'Không có lớp' }}</td>
+                                            <td class="text-wrap" style="max-width: 200px;">
+                                                {{ $student->class->name ?? 'Không có lớp' }}</td>
 
                                             <td>{{ $student->tel }}</td>
                                             <td>{{ $student->gender }}</td>
@@ -184,11 +185,11 @@
                                                 <a href="{{ route('student.edit', $student->id) }}"
                                                     class="btn btn-warning">Sửa</a>
                                                 <form action="{{ route('student.destroy', $student->id) }}" method="POST"
+                                                    class="delete-form" data-student-name="{{ $student->name }}"
                                                     style="display:inline-block;">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger"
-                                                        onclick="return confirm('Bạn có chắc muốn xóa?')">Xóa</button>
+                                                    <button type="button" class="btn btn-danger delete-btn">Xóa</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -242,4 +243,29 @@
 
     <!-- App js -->
     <script src="{{ asset('assets/admin/assets/js/app.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                var form = this.closest('.delete-form');
+                var studentName = form.getAttribute('data-student-name');
+    
+                Swal.fire({
+                    title: 'Bạn có chắc chắn muốn xóa?',
+                    text: "Bạn sẽ không thể khôi phục lại dữ liệu của sinh viên " + studentName + "!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Có, xóa nó!',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();  // Gửi form nếu người dùng xác nhận xóa
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

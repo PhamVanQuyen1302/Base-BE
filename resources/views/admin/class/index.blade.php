@@ -105,6 +105,17 @@
                                             {{ session('success') }}
                                         </div>
                                     @endif
+                                    @if (session('error'))
+                                        <div class="alert alert-danger">
+                                            {{ session('error') }}
+                                        </div>
+                                    @endif
+
+                                    @if (session('success'))
+                                        <div class="alert alert-success">
+                                            {{ session('success') }}
+                                        </div>
+                                    @endif
 
                                     @foreach ($data as $student)
                                         <tr>
@@ -158,26 +169,26 @@
 
 @endsection
 @section('js')
-<script>
-    const handleConfirm = (studentId) => {
-        swal({
-            title: "Bạn có muốn xóa lớp này không?",
-            buttons: {
-                cancel: "Hủy!",
-                confirm: {
-                    text: "Xóa",
-                    value: true,
-                    closeModal: true
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        const handleConfirm = (studentId) => {
+            Swal.fire({
+                title: "Bạn có muốn xóa lớp này không?",
+                icon: "warning", // Hiển thị biểu tượng cảnh báo
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Xóa',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Nếu xác nhận, gửi form xóa
+                    document.getElementById(`delete-form-${studentId}`).submit();
                 }
-            }
-        }).then((willDelete) => {
-            if (willDelete) {
-                // Nếu xác nhận, gửi form xóa
-                document.getElementById(`delete-form-${studentId}`).submit();
-            }
-        });
-    }
-</script>
+            });
+        }
+    </script>
     <script src="{{ asset('assets/admin/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/admin/assets/libs/simplebar/simplebar.min.js') }}"></script>
     <script src="{{ asset('assets/admin/assets/libs/node-waves/waves.min.js') }}"></script>
