@@ -42,7 +42,7 @@ class LoginController extends Controller
 
         if ($user->isAdmin()) {
 
-            return redirect()->route('student.index');
+            return redirect('/admin');
         }
         // Nếu không phải admin, chuyển hướng đến trang khác (ví dụ: trang chủ)
         return redirect()->route('home');

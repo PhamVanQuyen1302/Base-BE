@@ -29,7 +29,7 @@
         <div class="col-10">
             <h2 class="text-center">{{ $title }}</h2>
             <div class="row">
-                <form action="{{ route('class.update', $model->id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.class.update', $model->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('put')
                     <!-- Thông báo lỗi nếu tên lớp trùng -->

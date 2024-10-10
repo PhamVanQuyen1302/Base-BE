@@ -97,7 +97,7 @@
                     </div><!-- end card-body -->
                 </div><!-- end card -->
             </div><!-- end col -->
-            <a href="{{ route('class.index') }}" class="btn btn-danger">Quay về danh sách</a>
+            <a href="{{ route('admin.class.index') }}" class="btn btn-danger">Quay về danh sách</a>
         </div><!-- end col -->
     </div>
 

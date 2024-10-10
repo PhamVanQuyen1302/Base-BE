@@ -60,17 +60,29 @@
 
              <ul class="navbar-nav" id="navbar-nav">
                  <li class="menu-title"><span data-key="t-menu">Menu</span></li>
+                 <li class="nav-item">
+                     <a href="{{ route('admin.index') }}" class="nav-link" data-key="t-analytics">
+                         <i class="fas fa-home"></i> <!-- Biểu tượng cho trang chủ -->
+                         Trang chủ
+                     </a>
+                 </li>
 
                  <li class="nav-item">
-                     <a href="{{ route('class.index') }}" class="nav-link" data-key="t-analytics">
+                     <a href="{{ route('admin.class.index') }}" class="nav-link" data-key="t-analytics">
                          <i class="fas fa-chalkboard"></i> <!-- Icon for class list -->
                          Danh sách lớp học
                      </a>
                  </li>
                  <li class="nav-item">
-                     <a href="{{ route('student.index') }}" class="nav-link" data-key="t-analytics">
+                     <a href="{{ route('admin.student.index') }}" class="nav-link" data-key="t-analytics">
                          <i class="fas fa-user-graduate"></i> <!-- Icon for student list -->
                          Danh sách Sinh viên
+                     </a>
+                 </li>
+                 <li class="nav-item">
+                     <a href="{{ route('admin.user.index') }}" class="nav-link" data-key="t-analytics">
+                         <i class="fas fa-users"></i> <!-- Biểu tượng cho danh sách người dùng -->
+                         Danh sách tài khoản
                      </a>
                  </li>
                  <li class="nav-item">

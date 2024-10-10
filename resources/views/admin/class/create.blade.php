@@ -29,7 +29,7 @@
         <div class="col-10">
             <h2 class="text-center">{{ $title }}</h2>
             <div class="row">
-                <form action="{{ route('class.store') }}" method="POST">
+                <form action="{{ route('admin.class.store') }}" method="POST">
                     @csrf
                 
                     <!-- Thông báo lỗi nếu tên lớp trùng -->

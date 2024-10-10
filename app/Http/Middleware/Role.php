@@ -20,8 +20,8 @@ class Role
 
         if ($user) {
 
-            if ($user->role === 'admin' && !$request->is('student*')) {
-                return redirect('/student');
+            if ($user->role === 'admin' && !$request->is('admin*')) {
+                return redirect('/admin');
             }
 
             if ($user->role !== 'admin' && !$request->is('home')) {

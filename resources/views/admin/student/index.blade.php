@@ -37,7 +37,7 @@
                         <div class="row g-4 mb-3">
                             <div class="col-sm-auto">
                                 <div>
-                                    <a href="{{ route('student.create') }}" class="btn btn-success">
+                                    <a href="{{ route('admin.student.create') }}" class="btn btn-success">
                                         <i class="ri-add-line align-bottom me-1"></i> Thêm sinh viên
                                     </a>
                                     <button class="btn btn-soft-danger" onClick="deleteMultiple()">
@@ -47,7 +47,7 @@
                             </div>
                             <div class="col-sm">
                                 <div class="d-flex justify-content-sm-end">
-                                    <form method="GET" action="{{ route('student.index') }}">
+                                    <form method="GET" action="{{ route('admin.student.index') }}">
                                         <div class="input-group search-box ms-2">
                                             <input type="text" name="search" value="{{ $search }}"
                                                 class="form-control" placeholder="Tìm kiếm sinh viên...">
@@ -72,7 +72,7 @@
                                         </th>
                                         <th class="sort" data-sort="id">
                                             <a
-                                                href="{{ route('student.index', ['search' => $search, 'sort_by' => 'id', 'sort_order' => $sortBy == 'id' && $sortOrder == 'asc' ? 'desc' : 'asc']) }}">
+                                                href="{{ route('admin.student.index', ['search' => $search, 'sort_by' => 'id', 'sort_order' => $sortBy == 'id' && $sortOrder == 'asc' ? 'desc' : 'asc']) }}">
                                                 ID
                                                 @if ($sortBy == 'id')
                                                     @if ($sortOrder == 'asc')
@@ -85,7 +85,7 @@
                                         </th>
                                         <th class="sort" data-sort="name">
                                             <a
-                                                href="{{ route('student.index', ['search' => $search, 'sort_by' => 'name', 'sort_order' => $sortBy == 'name' && $sortOrder == 'asc' ? 'desc' : 'asc']) }}">
+                                                href="{{ route('admin.student.index', ['search' => $search, 'sort_by' => 'name', 'sort_order' => $sortBy == 'name' && $sortOrder == 'asc' ? 'desc' : 'asc']) }}">
                                                 Tên
                                                 @if ($sortBy == 'name')
                                                     @if ($sortOrder == 'asc')
@@ -98,7 +98,7 @@
                                         </th>
                                         <th class="sort" data-sort="name">
                                             <a
-                                                href="{{ route('student.index', ['search' => $search, 'sort_by' => 'name', 'sort_order' => $sortBy == 'name' && $sortOrder == 'asc' ? 'desc' : 'asc']) }}">
+                                                href="{{ route('admin.student.index', ['search' => $search, 'sort_by' => 'name', 'sort_order' => $sortBy == 'name' && $sortOrder == 'asc' ? 'desc' : 'asc']) }}">
                                                 Lớp
                                                 @if ($sortBy == 'name')
                                                     @if ($sortOrder == 'asc')
@@ -111,7 +111,7 @@
                                         </th>
                                         <th class="sort" data-sort="tel">
                                             <a
-                                                href="{{ route('student.index', ['search' => $search, 'sort_by' => 'tel', 'sort_order' => $sortBy == 'tel' && $sortOrder == 'asc' ? 'desc' : 'asc']) }}">
+                                                href="{{ route('admin.student.index', ['search' => $search, 'sort_by' => 'tel', 'sort_order' => $sortBy == 'tel' && $sortOrder == 'asc' ? 'desc' : 'asc']) }}">
                                                 Số điện thoại
                                                 @if ($sortBy == 'tel')
                                                     @if ($sortOrder == 'asc')
@@ -124,7 +124,7 @@
                                         </th>
                                         <th class="sort" data-sort="gender">
                                             <a
-                                                href="{{ route('student.index', ['search' => $search, 'sort_by' => 'gender', 'sort_order' => $sortBy == 'gender' && $sortOrder == 'asc' ? 'desc' : 'asc']) }}">
+                                                href="{{ route('admin.student.index', ['search' => $search, 'sort_by' => 'gender', 'sort_order' => $sortBy == 'gender' && $sortOrder == 'asc' ? 'desc' : 'asc']) }}">
                                                 Giới tính
                                                 @if ($sortBy == 'gender')
                                                     @if ($sortOrder == 'asc')
@@ -138,7 +138,7 @@
                                         <th class="sort" data-sort="image">Hình ảnh</th>
                                         <th class="sort" data-sort="address">
                                             <a
-                                                href="{{ route('student.index', ['search' => $search, 'sort_by' => 'address', 'sort_order' => $sortBy == 'address' && $sortOrder == 'asc' ? 'desc' : 'asc']) }}">
+                                                href="{{ route('admin.student.index', ['search' => $search, 'sort_by' => 'address', 'sort_order' => $sortBy == 'address' && $sortOrder == 'asc' ? 'desc' : 'asc']) }}">
                                                 Địa chỉ
                                                 @if ($sortBy == 'address')
                                                     @if ($sortOrder == 'asc')
@@ -180,11 +180,11 @@
                                             </td>
                                             <td>{{ $student->address }}</td>
                                             <td>
-                                                <a href="{{ route('student.show', $student->id) }}"
+                                                <a href="{{ route('admin.student.show', $student->id) }}"
                                                     class="btn btn-info">Xem</a>
-                                                <a href="{{ route('student.edit', $student->id) }}"
+                                                <a href="{{ route('admin.student.edit', $student->id) }}"
                                                     class="btn btn-warning">Sửa</a>
-                                                <form action="{{ route('student.destroy', $student->id) }}" method="POST"
+                                                <form action="{{ route('admin.student.destroy', $student->id) }}" method="POST"
                                                     class="delete-form" data-student-name="{{ $student->name }}"
                                                     style="display:inline-block;">
                                                     @csrf
