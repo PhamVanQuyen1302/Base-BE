@@ -29,14 +29,15 @@
         <div class="col-10">
             <h2 class="text-center">{{ $title }}</h2>
             <div class="row">
-                <form action="{{ route('admin.student.update', $model->id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.student.update', $model->id) }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
                     @method('put')
 
                     <div class="mb-3">
                         <label for="studentName" class="form-label">Tên sinh viên</label>
                         <input type="text" class="form-control" id="studentName" name="name"
-                            value="{{ $model->name }}" placeholder="Nhập tên sinh viên">
+                            value="{{ old('name', $model->name) }}" placeholder="Nhập tên sinh viên">
                     </div>
                     @error('name')
                         <span class="text-danger">{{ $message }}</span>
@@ -45,7 +46,7 @@
                     <div class="mb-3">
                         <label for="studentTel" class="form-label">Số điện thoại</label>
                         <input type="text" class="form-control" id="studentTel" name="tel"
-                            value="{{ $model->tel }}" placeholder="Nhập số điện thoại">
+                            value="{{ old('tel', $model->tel) }}" placeholder="Nhập số điện thoại">
                     </div>
                     @error('tel')
                         <span class="text-danger">{{ $message }}</span>
@@ -55,8 +56,10 @@
                         <label for="studentGender" class="form-label">Giới tính</label>
                         <select class="form-select" name="gender" id="studentGender">
                             <option selected disabled>Chọn giới tính</option>
-                            <option value="Nam" {{ $model->gender === 'nam' ? 'selected' : '' }}>Nam</option>
-                            <option value="Nữ" {{ $model->gender === 'nữ' ? 'selected' : '' }}>Nữ</option>
+                            <option value="Nam" {{ old('gender', $model->gender) === 'Nam' ? 'selected' : '' }}>Nam
+                            </option>
+                            <option value="Nữ" {{ old('gender', $model->gender) === 'Nữ' ? 'selected' : '' }}>Nữ
+                            </option>
                         </select>
                     </div>
                     @error('gender')
@@ -68,7 +71,9 @@
                         <select class="form-select" name="class_id" id="class">
                             <option selected disabled>Chọn lớp học</option>
                             @foreach ($dataClass as $class)
-                                <option {{ $class->id === $model->class_id ? "selected" : ""}} value="{{ $class->id }}">{{ $class->name }}</option>
+                                <option value="{{ $class->id }}"
+                                    {{ old('class_id', $model->class_id) == $class->id ? 'selected' : '' }}>
+                                    {{ $class->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -78,7 +83,7 @@
 
                     <div class="mb-3">
                         <label for="studentAddress" class="form-label">Địa chỉ</label>
-                        <textarea class="form-control" id="studentAddress" name="address" rows="4" placeholder="Nhập địa chỉ">{{ $model->address }}</textarea>
+                        <textarea class="form-control" id="studentAddress" name="address" rows="4" placeholder="Nhập địa chỉ">{{ old('address', $model->address) }}</textarea>
                     </div>
                     @error('address')
                         <span class="text-danger">{{ $message }}</span>
@@ -100,6 +105,7 @@
                         <button type="submit" class="btn btn-primary">Cập nhật sinh viên</button>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>

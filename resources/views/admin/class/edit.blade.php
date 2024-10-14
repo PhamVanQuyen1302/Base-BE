@@ -37,12 +37,12 @@
                         <div class="alert alert-danger">
                             {{ session('error') }}
                         </div>
-                    @endif,
+                    @endif
 
                     <div class="mb-3">
                         <label for="studentName" class="form-label">Tên lớp</label>
                         <input type="text" class="form-control" id="studentName" name="name"
-                            value="{{ $model->name }}" placeholder="Nhập tên lớp">
+                            value="{{ old('name', $model->name) }}" placeholder="Nhập tên lớp">
                     </div>
                     @error('name')
                         <span class="text-danger">{{ $message }}</span>
@@ -52,6 +52,7 @@
                         <button type="submit" class="btn btn-primary">Cập nhật lớp</button>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>
