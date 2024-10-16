@@ -66,6 +66,4 @@ Auth::routes();
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::get('/', function () {
-    return 123456;
-});
+

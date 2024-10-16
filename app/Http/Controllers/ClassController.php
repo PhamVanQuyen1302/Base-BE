@@ -52,13 +52,13 @@ class ClassController extends Controller
 
         if ($checkClass) {
             // Nếu trùng tên, redirect về trang tạo và gửi thông báo lỗi
-            return redirect()->route('class.create')->with('error', 'Tên lớp đã tồn tại.');
+            return redirect()->route('admin.class.create')->with('error', 'Tên lớp đã tồn tại.');
         }
 
         // Nếu không trùng, lưu dữ liệu
         ClassModel::create($data);
 
-        return redirect()->route('class.index')->with('success', 'Lớp đã được thêm thành công.');
+        return redirect()->route('admin.class.index')->with('success', 'Lớp đã được thêm thành công.');
     }
 
 
@@ -95,11 +95,11 @@ class ClassController extends Controller
 
         if ($checkClass) {
             // Nếu trùng tên, redirect về trang tạo và gửi thông báo lỗi
-            return redirect()->route('class.create')->with('error', 'Tên lớp đã tồn tại.');
+            return redirect()->route('admin.class.create')->with('error', 'Tên lớp đã tồn tại.');
         }
         $model->update($data);
 
-        return redirect()->route('class.index')->with('success', 'Thông tin lớp đã được cập nhật.');
+        return redirect()->route('admin.class.index')->with('success', 'Thông tin lớp đã được cập nhật.');
     }
 
     /**
@@ -117,6 +117,6 @@ class ClassController extends Controller
         // Nếu không có sinh viên nào, tiến hành xóa
         $class->delete();
 
-        return redirect()->route('class.index')->with('success', 'Xóa lớp ' . $class->name . ' thành công.');
+        return redirect()->route('admin.class.index')->with('success', 'Xóa lớp ' . $class->name . ' thành công.');
     }
 }

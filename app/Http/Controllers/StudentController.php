@@ -63,7 +63,7 @@ class StudentController extends Controller
 
         Student::create($data);
 
-        return redirect()->route('student.index')->with('success', 'Sinh viên đã được thêm thành công.');
+        return redirect()->route('admin.student.index')->with('success', 'Sinh viên đã được thêm thành công.');
     }
 
     /**
@@ -108,7 +108,7 @@ class StudentController extends Controller
             Storage::disk('public')->delete($oldImage);
         }
 
-        return redirect()->route('student.index')->with('success', 'Thông tin sinh viên đã được cập nhật.');
+        return redirect()->route('admin.student.index')->with('success', 'Thông tin sinh viên đã được cập nhật.');
     }
 
     /**
@@ -125,6 +125,6 @@ class StudentController extends Controller
             Storage::disk('public')->delete($currentImage);
         }
 
-        return redirect()->route('student.index')->with('success', 'Sinh viên đã được xóa.');
+        return redirect()->route('admin.student.index')->with('success', 'Sinh viên đã được xóa.');
     }
 }
