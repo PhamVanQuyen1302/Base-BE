@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('title')
-    {{ $title }}
+    Danh sách tài khoản
 @endsection
 @section('css')
     <!-- App favicon -->
@@ -37,8 +37,8 @@
                         <div class="row g-4 mb-3">
                             <div class="col-sm-auto">
                                 <div>
-                                    <a href="" class="btn btn-success">
-                                        <i class="ri-add-line align-bottom me-1"></i> Thêm người dùng
+                                    <a href="{{ route('admin.user.addUI') }}" class="btn btn-success">
+                                        <i class="ri-add-line align-bottom me-1"></i> Thêm tài khoản
                                     </a>
                                     <button class="btn btn-soft-danger" onClick="deleteMultiple()">
                                         <i class="ri-delete-bin-2-line"></i>
@@ -49,11 +49,11 @@
                                 <div class="d-flex justify-content-sm-end">
                                     <form method="GET" action="{{ route('admin.user.index') }}">
                                         <div class="input-group search-box ms-2">
-                                            <input type="text" name="search" value="{{ $search }}"
-                                                class="form-control" placeholder="Tìm kiếm người dùng...">
+                                            <input type="text" name="search" class="form-control"
+                                                placeholder="Tìm kiếm tài khoản...">
                                             <!-- Giữ nguyên giá trị sắp xếp khi tìm kiếm -->
-                                            <input type="hidden" name="sort_by" value="{{ $sortBy }}">
-                                            <input type="hidden" name="sort_order" value="{{ $sortOrder }}">
+                                            <input type="hidden" name="sort_by">
+                                            <input type="hidden" name="sort_order">
                                             <button class="btn btn-primary" type="submit">
                                                 <i class="ri-search-line search-icon"></i>
                                             </button>
@@ -74,58 +74,23 @@
                                             </div>
                                         </th>
                                         <th class="sort" data-sort="id">
-                                            <a
-                                                href="{{ route('admin.user.index', ['search' => $search, 'sort_by' => 'id', 'sort_order' => $sortBy == 'id' && $sortOrder == 'asc' ? 'desc' : 'asc']) }}">
-                                                ID
-                                                @if ($sortBy == 'id')
-                                                    @if ($sortOrder == 'asc')
-                                                        ↑
-                                                    @else
-                                                        ↓
-                                                    @endif
-                                                @endif
-                                            </a>
+                                            ID
                                         </th>
                                         <th class="sort" data-sort="name">
-                                            <a
-                                                href="{{ route('admin.user.index', ['search' => $search, 'sort_by' => 'name', 'sort_order' => $sortBy == 'name' && $sortOrder == 'asc' ? 'desc' : 'asc']) }}">
-                                                Tên
-                                                @if ($sortBy == 'name')
-                                                    @if ($sortOrder == 'asc')
-                                                        ↑
-                                                    @else
-                                                        ↓
-                                                    @endif
-                                                @endif
-                                            </a>
+                                            Tên
                                         </th>
                                         <th class="sort" data-sort="email">
-                                            <a
-                                                href="{{ route('admin.user.index', ['search' => $search, 'sort_by' => 'email', 'sort_order' => $sortBy == 'email' && $sortOrder == 'asc' ? 'desc' : 'asc']) }}">
-                                                Email
-                                                @if ($sortBy == 'email')
-                                                    @if ($sortOrder == 'asc')
-                                                        ↑
-                                                    @else
-                                                        ↓
-                                                    @endif
-                                                @endif
-                                            </a>
+                                            Email
                                         </th>
                                         <th class="sort" data-sort="role">
-                                            <a
-                                                href="{{ route('admin.user.index', ['search' => $search, 'sort_by' => 'role', 'sort_order' => $sortBy == 'role' && $sortOrder == 'asc' ? 'desc' : 'asc']) }}">
-                                                Vai trò
-                                                @if ($sortBy == 'role')
-                                                    @if ($sortOrder == 'asc')
-                                                        ↑
-                                                    @else
-                                                        ↓
-                                                    @endif
-                                                @endif
-                                            </a>
+                                            Vai trò
                                         </th>
-
+                                        <th class="sort" data-sort="role">
+                                            Trạng thái
+                                        </th>
+                                        <th class="sort" data-sort="role">
+                                            Ảnh
+                                        </th>
                                         <th class="sort" data-sort="action">Hành động</th>
                                     </tr>
                                 </thead>
@@ -135,31 +100,40 @@
                                             {{ session('success') }}
                                         </div>
                                     @endif
-                                        {{-- @dd($data) --}}
+                                    @php
+                                        $dataRole = [
+                                            1 => 'Admin',
+                                            3 => 'Quản lý',
+                                            2 => 'Lễ tân',
+                                            4 => 'Khách hàng',
+                                        ];
+                                    @endphp
                                     @foreach ($data as $user)
-
                                         <tr>
                                             <td>
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox"
-                                                        value="{{ $user->id }}">
+                                                        value="{{ $user['id'] }}">
                                                 </div>
                                             </td>
-                                            <td>{{ $user->id }}</td>
-                                            <td class="text-wrap" style="max-width: 200px;">{{ $user->name }}</td>
-                                            <td>{{ $user->email }}</td>
-                                            <td>{{ $user->role }}</td>
+                                            <td>{{ $user['id'] }}</td>
+                                            <td class="text-wrap" style="max-width: 200px;">{{ $user['name'] }}</td>
+                                            <td>{{ $user['email'] }}</td>
+                                            <td>{{ $dataRole[$user['role']] }}</td>
+                                            <td>{{ $user['status_name'] }}</td>
                                             <td>
-                                                {{-- <a href="{{ route('admin.user.show', $user->id) }}" class="btn btn-info">Xem</a>
-                                                <a href="{{ route('admin.user.edit', $user->id) }}"
-                                                    class="btn btn-warning">Sửa</a> --}}
-                                                {{-- <form action="{{ route('admin.user.destroy', $user->id) }}" method="POST"
-                                                    class="delete-form" data-user-name="{{ $user->name }}"
+                                                <img src="{{ $user['image'] }}" style="width: 100px" alt="{{ $user['image'] }}">
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('admin.user.editUI', $user["id"]) }}"
+                                                    class="btn btn-warning">Sửa</a>
+                                                <form action="{{ route('admin.user.destroy', $user["id"]) }}" method="POST"
+                                                    class="delete-form" data-user-name="{{ $user["name"] }}"
                                                     style="display:inline-block;">
-                                                    @csrf
+                                                    @csrf                       
                                                     @method('DELETE')
                                                     <button type="button" class="btn btn-danger delete-btn">Xóa</button>
-                                                </form> --}}
+                                                </form>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -172,16 +146,13 @@
                                             colors="primary:#121331,secondary:#08a88a"
                                             style="width:75px;height:75px"></lord-icon>
                                         <h5 class="mt-2">Xin lỗi! Không có kết quả</h5>
-                                        <p class="text-muted mb-0">Không tìm thấy người dùng nào phù hợp với tìm kiếm của
+                                        <p class="text-muted mb-0">Không tìm thấy tài khoản nào phù hợp với tìm kiếm của
                                             bạn.</p>
                                     </div>
                                 </div>
                             @endif
                         </div>
 
-                        <div class="d-flex justify-content-end">
-                            {{ $data->appends(request()->input())->links() }}
-                        </div>
                     </div>
                 </div><!-- end card-body -->
             </div><!-- end card -->
@@ -220,17 +191,16 @@
                 var userName = form.getAttribute('data-user-name'); // Đổi từ 'student' sang 'user'
 
                 Swal.fire({
-                    title: 'Bạn có chắc chắn muốn xóa?',
-                    text: "Bạn sẽ không thể khôi phục lại dữ liệu của người dùng " + userName + "!",
+                    title: 'Bạn có chắc chắn muốn khóa tài khoản không?',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
-                    confirmButtonText: 'Có, xóa nó!',
+                    confirmButtonText: 'Đồng ý',
                     cancelButtonText: 'Hủy'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        form.submit(); // Gửi form nếu người dùng xác nhận xóa
+                        form.submit(); // Gửi form nếu tài khoản xác nhận xóa
                     }
                 });
             });

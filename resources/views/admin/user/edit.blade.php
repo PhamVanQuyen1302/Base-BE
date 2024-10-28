@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('title')
-    {{ $title }}
+    Sửa tài khoản
 @endsection
 @section('css')
     <!-- App favicon -->
@@ -27,79 +27,79 @@
 @section('content')
     <div class="w-100 d-flex justify-content-center align-items-center">
         <div class="col-10">
-            <h2 class="text-center">{{ $title }}</h2>
+            <h2 class="text-center">Sửa tài khoản</h2>
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
             <div class="row">
-                <form action="{{ route('admin.student.update', $model->id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.user.edit', $data->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    @method('put')
+                    @method('PUT')
 
                     <div class="mb-3">
-                        <label for="studentName" class="form-label">Tên sinh viên</label>
-                        <input type="text" class="form-control" id="studentName" name="name"
-                            value="{{ $model->name }}" placeholder="Nhập tên sinh viên">
+                        <label for="name" class="form-label">Tên</label>
+                        <input type="text" class="form-control" id="name" name="name"
+                            value="{{ old('name', $data->name) }}" placeholder="Nhập tên">
+                        @error('name')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
-                    @error('name')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
 
                     <div class="mb-3">
-                        <label for="studentTel" class="form-label">Số điện thoại</label>
-                        <input type="text" class="form-control" id="studentTel" name="tel"
-                            value="{{ $model->tel }}" placeholder="Nhập số điện thoại">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email"
+                            value="{{ old('email', $data->email) }}" placeholder="Nhập email">
+                        @error('email')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
-                    @error('tel')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
 
                     <div class="mb-3">
-                        <label for="studentGender" class="form-label">Giới tính</label>
-                        <select class="form-select" name="gender" id="studentGender">
-                            <option selected disabled>Chọn giới tính</option>
-                            <option value="Nam" {{ $model->gender === 'nam' ? 'selected' : '' }}>Nam</option>
-                            <option value="Nữ" {{ $model->gender === 'nữ' ? 'selected' : '' }}>Nữ</option>
+                        <label for="role" class="form-label">Chức vụ</label>
+                        <select class="form-select" name="role" id="role">
+                            <option value="1" {{ old('role', $data->role) == 1 ? 'selected' : '' }}>Admin</option>
+                            <option value="3" {{ old('role', $data->role) == 3 ? 'selected' : '' }}>Quản lý</option>
+                            <option value="2" {{ old('role', $data->role) == 2 ? 'selected' : '' }}>Lễ tân</option>
+                            <option value="4" {{ old('role', $data->role) == 4 ? 'selected' : '' }}>Khách hàng
+                            </option>
                         </select>
+                        @error('role')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
-                    @error('gender')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
 
                     <div class="mb-3">
-                        <label for="class" class="form-label">Lớp học</label>
-                        <select class="form-select" name="class_id" id="class">
-                            <option selected disabled>Chọn lớp học</option>
-                            @foreach ($dataClass as $class)
-                                <option {{ $class->id === $model->class_id ? "selected" : ""}} value="{{ $class->id }}">{{ $class->name }}</option>
-                            @endforeach
+                        <label for="status_id" class="form-label">Trạng thái</label>
+                        <select class="form-select" name="status_id" id="status_id">
+                            <option value="1" {{ old('status_id', $data->status_id) == 1 ? 'selected' : '' }}>Hoạt
+                                động</option>
+                            <option value="3" {{ old('status_id', $data->status_id) == 3 ? 'selected' : '' }}>Ngưng
+                                hoạt động</option>
                         </select>
+                        @error('status_id')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
-                    @error('class_id')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+                    <div class="mb-3">
+                        <img style="width: 200px;" src="{{$data->image }}" alt="img">
+                    </div>
 
                     <div class="mb-3">
-                        <label for="studentAddress" class="form-label">Địa chỉ</label>
-                        <textarea class="form-control" id="studentAddress" name="address" rows="4" placeholder="Nhập địa chỉ">{{ $model->address }}</textarea>
+                        <label for="image" class="form-label">Ảnh đại diện</label>
+                        <input type="file" class="form-control" id="image" name="image">
+                        @error('image')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
-                    @error('address')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-
-                    <div class="mb-3">
-                        <label for="studentImage" class="form-label">Ảnh đại diện</label>
-                        <input type="file" class="form-control" id="studentImage" name="image">
-                        @if ($model->image)
-                            <img src="{{ asset('storage/' . $model->image) }}" alt="Student Image" class="img-fluid mt-2"
-                                width="150">
-                        @endif
-                    </div>
-                    @error('image')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
 
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Cập nhật sinh viên</button>
+                        <button type="submit" class="btn btn-primary">Cập nhật</button>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>
@@ -128,4 +128,29 @@
 
     <!-- App js -->
     <script src="{{ asset('assets/admin/assets/js/app.js') }}"></script>
+
+    <script>
+        function addImageGallery() {
+            let id = 'gen' + '_' + Math.random().toString(36).substring(2, 15).toLowerCase();
+            let html = `
+                <div class="col-md-4" id="${id}_item">
+                    <label for="${id}" class="form-label">Image</label>
+                    <div class="d-flex">
+                        <input type="file" class="form-control" name="image[]" id="${id}">
+                        <button type="button" class="btn btn-danger" onclick="removeImageGallery('${id}_item')">
+                            <span class="bx bx-trash"></span>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            $('#gallery_list').append(html);
+        }
+
+        function removeImageGallery(id) {
+            if (confirm('Chắc chắn xóa không?')) {
+                $('#' + id).remove();
+            }
+        }
+    </script>
 @endsection

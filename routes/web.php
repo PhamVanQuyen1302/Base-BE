@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
@@ -54,11 +55,13 @@ Route::prefix('admin')
                 Route::delete('/{id}/destroy', [ClassController::class, 'destroy'])->name('destroy');
             });
 
-        Route::prefix('user')
-            ->as('user.')
-            ->group(function () {
-                Route::get('/', [UserController::class, 'index'])->name('index');
-                
+        Route::prefix('user')->as('user.')->group(function () {
+                Route::get('/', [UsersController::class, 'index'])->name('index');
+                Route::get('/add-ui', [UsersController::class, 'addUI'])->name('addUI');
+                Route::post('/add', [UsersController::class, 'add'])->name('add');
+                Route::get('/edit-ui/{id}', [UsersController::class, 'editUI'])->name('editUI');
+                Route::put('/edit/{id}', [UsersController::class, 'edit'])->name('edit');
+                Route::delete('/destroy/{id}', [UsersController::class, 'delete'])->name('destroy');
             });
     });
 
@@ -67,3 +70,7 @@ Auth::routes();
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

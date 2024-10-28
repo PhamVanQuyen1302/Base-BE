@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('title')
-    {{ $title }}
+    Thêm tài khoản
 @endsection
 @section('css')
     <!-- App favicon -->
@@ -27,84 +27,82 @@
 @section('content')
     <div class="w-100 d-flex justify-content-center align-items-center">
         <div class="col-10">
-            <h2 class="text-center">{{ $title }}</h2>
+            <h2 class="text-center">Thêm tài khoản</h2>
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif  
             <div class="row">
-                <form action="{{ route('admin.student.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.user.add') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-
                     <div class="mb-3">
-                        <label for="studentName" class="form-label">Tên sinh viên</label>
-                        <input type="text" class="form-control" id="studentName" name="name"
-                            placeholder="Nhập tên sinh viên">
+                        <label for="name" class="form-label">Tên</label>
+                        <input type="text" class="form-control" id="name" name="name"
+                            value="{{ old('name') }}" placeholder="Nhập tên">
+                        @error('name')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
-                    @error('name')
-                        <span class="text-danger">
-                            {{ $message }}
-                        </span>
-                    @enderror
 
                     <div class="mb-3">
-                        <label for="studentTel" class="form-label">Số điện thoại</label>
-                        <input type="text" class="form-control" id="studentTel" name="tel"
-                            placeholder="Nhập số điện thoại">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email"
+                            value="{{ old('email') }}" placeholder="Nhập email">
+                        @error('email')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
-                    @error('tel')
-                        <span class="text-danger">
-                            {{ $message }}
-                        </span>
-                    @enderror
 
                     <div class="mb-3">
-                        <label for="studentGender" class="form-label">Giới tính</label>
-                        <select class="form-select" name="gender" id="studentGender">
-                            <option selected disabled>Chọn giới tính</option>
-                            <option value="Nam">Nam</option>
-                            <option value="Nữ">Nữ</option>
+                        <label for="password" class="form-label">Mật khẩu</label>
+                        <input type="password" class="form-control" id="password" name="password"
+                            placeholder="Nhập mật khẩu">
+                        @error('password')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Chức vụ</label>
+                        <select class="form-select" name="role" id="role">
+                            <option selected disabled>Chọn chức vụ</option>
+                            <option value="1" {{ old('role') == 1 ? 'selected' : '' }}>Admin</option>
+                            <option value="3" {{ old('role') == 3 ? 'selected' : '' }}>Quản lý</option>
+                            <option value="2" {{ old('role') == 2 ? 'selected' : '' }}>Lễ tân</option>
+                            <option value="4" {{ old('role') == 4 ? 'selected' : '' }}>Khách hàng</option>
                         </select>
+                        @error('role')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
-                    @error('gender')
-                        <span class="text-danger">
-                            {{ $message }}
-                        </span>
-                    @enderror
 
                     <div class="mb-3">
-                        <label for="class" class="form-label">Lớp học</label>
-                        <select class="form-select" name="class_id" id="class">
-                            <option selected disabled>Chọn lớp học</option>
-                            @foreach ($dataClass as $class)
-                                <option value="{{ $class->id }}">{{ $class->name }}</option>
-                            @endforeach
+                        <label for="status_id" class="form-label">Trạng thái</label>
+                        <select class="form-select" name="status_id" id="status_id">
+                            <option selected disabled>Chọn trạng thái</option>
+                            <option value="1" {{ old('status_id') == 1 ? 'selected' : '' }}>Hoạt động</option>
+                            <option value="3" {{ old('status_id') == 3 ? 'selected' : '' }}>Ngưng hoạt động</option>
                         </select>
+                        @error('status_id')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
-                    @error('class_id')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-
-                    <div class="mb-3">
-                        <label for="studentAddress" class="form-label">Địa chỉ</label>
-                        <textarea class="form-control" id="studentAddress" name="address" rows="4" placeholder="Nhập địa chỉ"></textarea>
-                    </div>
-                    @error('address')
-                        <span class="text-danger">
-                            {{ $message }}
-                        </span>
-                    @enderror
 
                     <div class="mb-3">
                         <label for="studentImage" class="form-label">Ảnh đại diện</label>
                         <input type="file" class="form-control" id="studentImage" name="image">
+                        @error('image')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
-                    @error('image')
-                        <span class="text-danger">
-                            {{ $message }}
-                        </span>
-                    @enderror
 
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Thêm sinh viên</button>
+                        <button type="submit" class="btn btn-primary">Thêm</button>
                     </div>
                 </form>
+
             </div>
         </div>
     </div>
